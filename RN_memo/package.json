@@ -7,7 +7,14 @@
     "ios": "react-native run-ios",
     "start": "react-native start",
     "test": "jest",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx"
+    "lint": "tsc --noEmit && eslint --fix --ext .js,.jsx,.ts,.tsx ./",
+    "clean": "watchman watch-del-all && rm -rf $TMPDIR/react-native-packager-cache-* && rm -rf $TMPDIR/haste-map-react-native-packager-* && rm -rf $TMPDIR/metro-bundler-cache-* ",
+    "clean:node": "rm -rf node_modules/ && yarn cache clean",
+    "clean:ios": "rm -rf ios/build",
+    "clean:android": "rm -rf android/.gradle && rm -rf android/.idea && rm -rf android/build && rm -rf android/app/build ",
+    "clean:all": "yarn run clean && yarn run clean:node && yarn clean:ios && yarn clean:android",
+    "prettier:write": "npx prettier --write **/*.{js,jsx,ts,tsx,json} && npx prettier --write *.{js,jsx,ts,tsx,json}",
+    "postinstall": "npx jetify"
   },
   "dependencies": {
     "react": "16.11.0",
@@ -40,5 +47,10 @@
       "json",
       "node"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged && npm run lint"
+    }
   }
 }
