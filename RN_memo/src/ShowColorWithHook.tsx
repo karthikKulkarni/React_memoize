@@ -1,8 +1,9 @@
+/* eslint-disable no-console */
 /* eslint-disable react-native/no-inline-styles */
 import React, { useState, useMemo, useCallback } from 'react';
 import { View, Text, Button } from 'react-native';
 
-const ShowColorWithHook = ({ colors }: { colors: [string] }) => {
+const ShowColorWithHook = ({ colors }: { colors: string[] }) => {
   const [color, setColor] = useState(colors[0]);
 
   const getColor = useCallback(() => {

@@ -14,7 +14,7 @@ import { SafeAreaView, View, Text, StatusBar, Button } from 'react-native';
 import ShowColor from './ShowColor';
 import ShowColorWithHook from './ShowColorWithHook';
 
-type Colors = [string];
+type Colors = string[];
 type State = {
   color: string;
 };

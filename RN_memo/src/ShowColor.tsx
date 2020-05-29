@@ -1,3 +1,5 @@
+/* eslint-disable react-native/no-inline-styles */
+/* eslint-disable no-console */
 import React from 'react';
 import { View, Text } from 'react-native';
 
