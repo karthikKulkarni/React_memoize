@@ -30,5 +30,7 @@ module.exports = {
       },
     ],
     '@typescript-eslint/camelcase': 'off',
+    'import/no-named-as-default': 0,
+    'import/no-named-as-default-member': 0,
   },
 };
