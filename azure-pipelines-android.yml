@@ -33,7 +33,7 @@ steps:
 
   - task: AndroidSigning@2
     inputs:
-      apkFiles: "**/*.apk"
+      apkFiles: "RN_memo/android/app/build/outputs/apk/release/app-universal-release.apk"
       jarsign: true
       jarsignerKeystoreFile: "rn_memo.keystore"
       jarsignerKeystorePassword: "$(keystorePassword)"
