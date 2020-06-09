@@ -38,7 +38,7 @@ steps:
       apksignerKeyPassword: '$(keystorePassword)'
       zipalign: true
 
-  - script: ls && mv RN_memo/android/app/build/outputs/apk/release/app-arm64-v8a-release.apk RN_memo$(Build.BuildNumber).apk
+  - script: ls /Users/runner/runners/2.169.1/work/1/s/RN_memo/android/app/build/outputs/apk/release && mv RN_memo/android/app/build/outputs/apk/release/app-arm64-v8a-release.apk RN_memo$(Build.BuildNumber).apk
     displayName: "Rename apk"
 
   - task: PublishBuildArtifacts@1
