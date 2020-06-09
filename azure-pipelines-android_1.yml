@@ -21,8 +21,8 @@ steps:
 
   - task: Gradle@2
     inputs:
-      gradleWrapperFile: 'android/gradlew'
-      workingDirectory: 'android/'
+      gradleWrapperFile: 'RN_memo/android/gradlew'
+      workingDirectory: 'RN_memo/android'
       options: '-PversionName=$(Build.BuildNumber) -PversionCode=$(Build.BuildId)'
       tasks: 'assembleRelease'
       publishJUnitResults: false
