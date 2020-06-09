@@ -7,10 +7,7 @@ trigger:
   - master
 
 pool:
-  vmImage: "macOS-10.14"
-
-variables:
-  - group: AndroidKeystore
+  vmImage: "macos-latest"
 
 steps:
   - task: NodeTool@0
@@ -19,13 +16,13 @@ steps:
       versionSpec: "12.16.1"
 
   - script: npm install
-    workingDirectory: src
+    workingDirectory: RN_memo
     displayName: "Install node dependencies"
 
   - task: Gradle@2
     inputs:
-      workingDirectory: "src/android"
-      gradleWrapperFile: "src/android/gradlew"
+      workingDirectory: "RN_memo/android"
+      gradleWrapperFile: "RN_memo/android/gradlew"
       gradleOptions: "-Xmx3072m"
       publishJUnitResults: false
       testResultsFiles: "**/TEST-*.xml"
@@ -33,35 +30,35 @@ steps:
 
   - task: AndroidSigning@2
     inputs:
-      apkFiles: "**/*.apk"
+      apkFiles: "**/app-universal-release.apk"
       jarsign: true
-      jarsignerKeystoreFile: "android.keystore"
-      jarsignerKeystorePassword: "$(jarsignerKeystorePassword)"
-      jarsignerKeystoreAlias: "react-native-pipeline-key"
-      jarsignerKeyPassword: "$(jarsignerKeyPassword)"
+      jarsignerKeystoreFile: "rn_memo.keystore"
+      jarsignerKeystorePassword: "$(keystorePassword)"
+      jarsignerKeystoreAlias: "$(keystoreAlias)"
+      jarsignerKeyPassword: "$(keystorePassword)"
       zipalign: true
 
-  - script: mv src/android/app/build/outputs/apk/release/app-release-unsigned.apk ReactNativePipeline$(Build.BuildNumber).apk
+  - script: mv RN_memo/android/app/build/outputs/apk/release/app-release-unsigned.apk RN_memo$(Build.BuildNumber).apk
     displayName: "Rename apk"
 
   - task: PublishBuildArtifacts@1
     inputs:
-      pathtoPublish: ReactNativePipeline$(Build.BuildNumber).apk
+      pathtoPublish: RN_memo$(Build.BuildNumber).apk
       artifactName: drop
       publishLocation: "container"
 
-  - task: AppCenterDistribute@3
-    displayName: "Create a release on App Center"
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
-    inputs:
-      serverEndpoint: "app-center"
-      appSlug: "stafford.williams/ReactNativePipeline-Android"
-      appFile: "ReactNativePipeline$(Build.BuildNumber).apk"
-      releaseNotesOption: "input"
-      releaseNotesInput: |
-        $(Build.SourceVersionMessage)
+  # - task: AppCenterDistribute@3
+  #   displayName: "Create a release on App Center"
+  #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  #   inputs:
+  #     serverEndpoint: "app-center"
+  #     appSlug: "stafford.williams/ReactNativePipeline-Android"
+  #     appFile: "ReactNativePipeline$(Build.BuildNumber).apk"
+  #     releaseNotesOption: "input"
+  #     releaseNotesInput: |
+  #       $(Build.SourceVersionMessage)
 
-        latest source: '$(Build.SourceVersion)'
+  #       latest source: '$(Build.SourceVersion)'
 
-        An automated release from Azure DevOps
-      destinationType: "groups"
+  #       An automated release from Azure DevOps
+  #     destinationType: "groups"
