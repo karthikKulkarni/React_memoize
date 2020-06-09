@@ -35,7 +35,7 @@ steps:
     inputs:
       apkFiles: "**/*.apk"
       jarsign: true
-      jarsignerKeystoreFile: "$(rn_memo.keystore)"
+      jarsignerKeystoreFile: "rn_memo.keystore"
       jarsignerKeystorePassword: "$(keystorePassword)"
       jarsignerKeystoreAlias: "my-rn_memo-alias"
       jarsignerKeyPassword: "$(keystorePassword)"
