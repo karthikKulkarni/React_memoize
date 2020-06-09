@@ -20,29 +20,29 @@ steps:
     displayName: "Install node dependencies"
 
   - task: Gradle@2
-  inputs:
-    gradleWrapperFile: 'android/gradlew'
-    workingDirectory: 'android/'
-    options: '-PversionName=$(Build.BuildNumber) -PversionCode=$(Build.BuildId)'
-    tasks: 'assembleRelease'
-    publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    gradleOptions: '-Xmx3072m'
+    inputs:
+      gradleWrapperFile: 'android/gradlew'
+      workingDirectory: 'android/'
+      options: '-PversionName=$(Build.BuildNumber) -PversionCode=$(Build.BuildId)'
+      tasks: 'assembleRelease'
+      publishJUnitResults: false
+      javaHomeOption: 'JDKVersion'
+      gradleOptions: '-Xmx3072m'
 
-- task: AndroidSigning@3
-  inputs:
-    apkFiles: '**/*.apk'
-    apksignerKeystoreFile: 'rn_memo.keystore'
-    apksignerKeystorePassword: '$(keystorePassword)'
-    apksignerKeystoreAlias: '$(keystoreAlias)'
-    apksignerKeyPassword: '$(keystorePassword)'
-    zipalign: true
+  - task: AndroidSigning@3
+    inputs:
+      apkFiles: '**/*.apk'
+      apksignerKeystoreFile: 'rn_memo.keystore'
+      apksignerKeystorePassword: '$(keystorePassword)'
+      apksignerKeystoreAlias: '$(keystoreAlias)'
+      apksignerKeyPassword: '$(keystorePassword)'
+      zipalign: true
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: 'android/app/build/outputs/apk/release'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: 'android/app/build/outputs/apk/release'
+      ArtifactName: 'drop'
+      publishLocation: 'Container'
   # - task: AppCenterDistribute@3
   #   displayName: "Create a release on App Center"
   #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
