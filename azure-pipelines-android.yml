@@ -3,8 +3,7 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
-trigger:
-  - master
+trigger: none
 
 pool:
   vmImage: "macos-latest"
@@ -46,7 +45,6 @@ steps:
       pathtoPublish: RN_memo$(Build.BuildNumber).apk
       artifactName: drop
       publishLocation: "container"
-
   # - task: AppCenterDistribute@3
   #   displayName: "Create a release on App Center"
   #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
@@ -57,8 +55,6 @@ steps:
   #     releaseNotesOption: "input"
   #     releaseNotesInput: |
   #       $(Build.SourceVersionMessage)
-
   #       latest source: '$(Build.SourceVersion)'
-
   #       An automated release from Azure DevOps
   #     destinationType: "groups"

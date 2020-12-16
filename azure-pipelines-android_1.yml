@@ -21,28 +21,34 @@ steps:
 
   - task: Gradle@2
     inputs:
-    gradleWrapperFile: 'android/gradlew'
-    workingDirectory: 'android/'
-    options: '-PversionName=$(Build.BuildNumber) -PversionCode=$(Build.BuildId)'
-    tasks: 'assembleRelease'
-    publishJUnitResults: false
-    javaHomeOption: 'JDKVersion'
-    gradleOptions: '-Xmx3072m'
+      gradleWrapperFile: "RN_memo/android/gradlew"
+      workingDirectory: "RN_memo/android"
+      options: "-PversionName=$(Build.BuildNumber) -PversionCode=$(Build.BuildId)"
+      tasks: "assembleRelease"
+      publishJUnitResults: false
+      javaHomeOption: "JDKVersion"
+      gradleOptions: "-Xmx3072m"
 
-- task: AndroidSigning@3
+  - script: ls /Users/runner/runners/2.169.1/work/1/s/RN_memo/android/app/build/outputs/apk/release
+    displayName: "All apks"
+
+  - task: AndroidSigning@3
     inputs:
-    apkFiles: '**/*.apk'
-    apksignerKeystoreFile: 'rn_memo.keystore'
-    apksignerKeystorePassword: '$(keystorePassword)'
-    apksignerKeystoreAlias: '$(keystoreAlias)'
-    apksignerKeyPassword: '$(keystorePassword)'
-    zipalign: true
+      apkFiles: "**/app-universal*.apk"
+      apksignerKeystoreFile: "rn_memo.keystore"
+      apksignerKeystorePassword: "$(keystorePassword)"
+      apksignerKeystoreAlias: "$(keystoreAlias)"
+      apksignerKeyPassword: "$(keystorePassword)"
+      zipalign: true
 
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: 'android/app/build/outputs/apk/release'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+  - script: ls /Users/runner/runners/2.169.1/work/1/s/RN_memo/android/app/build/outputs/apk/release && mv RN_memo/android/app/build/outputs/apk/release/app-universal-release.apk RN_memo$(Build.BuildNumber).apk
+    displayName: "Rename apk"
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathtoPublish: RN_memo$(Build.BuildNumber).apk
+      artifactName: drop
+      publishLocation: "container"
   # - task: AppCenterDistribute@3
   #   displayName: "Create a release on App Center"
   #   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
